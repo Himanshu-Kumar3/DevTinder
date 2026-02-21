@@ -3,25 +3,46 @@ const {adminAuth} = require("./middleware/auth")
 // This create an app 
 const app = express();
 
+
+// Handling Errors :-
+app.get("/getUserData" , (req , res) =>{
+      // try{
+          throw new Error(" Anonymous")
+          res.send("User Data Sent")
+      // }catch(er){
+      //   res.status(500).send("Error occurs")
+      // }
+     
+})
+
+app.use("/",(er , req , res , next)=>{
+      if(er){
+            res.status(500).send(` ${er} `);
+      }
+})
+
+
+
+
 // why do we need the middleware :- if we hava to write the auth for admin -> without middleware we have to write it for each and every path
 // which can become a very messy -> to make the code clean we use them
 
-app.use("/admin" , adminAuth);
+// app.use("/admin" , adminAuth);
 
-// also 
-app.get("/user" , (req, res) =>{
-      res.send("HEY I am your user")
-})
+// // also 
+// app.get("/user" , (req, res) =>{
+//       res.send("HEY I am your user")
+// })
 
-// Defining the authorization in all the path -> looks clumsy 
-app.get("/admin/getAllData" , (req, res)=>{
-          res.send("Getting all the data")     
-});
+// // Defining the authorization in all the path -> looks clumsy 
+// app.get("/admin/getAllData" , (req, res)=>{
+//           res.send("Getting all the data")     
+// });
 
 
-app.get("/admin/deleteData" , (req, res)=>{
-            res.send("Deleted all the data");
-})
+// app.get("/admin/deleteData" , (req, res)=>{
+//             res.send("Deleted all the data");
+// })
 
 
 // These middle route handlers are known as middlewares
