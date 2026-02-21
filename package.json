@@ -1,5 +1,26 @@
 {
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "- Create an account\r  - Login / Update your profile\r  - Feed Page -> Explore \r  - Send connection request \r  - See the matches\r  - See whom i sent the request / response \r  - Messages and so on",
+  "homepage": "https://github.com/Himanshu-Kumar3/DevTinder#readme",
+  "bugs": {
+    "url": "https://github.com/Himanshu-Kumar3/DevTinder/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Himanshu-Kumar3/DevTinder.git"
+  },
+  "license": "ISC",
+  "author": "Himanshu Kumar",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start":"node src/app.js",
+    "dev" :"nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "express": "^5.2.1"
-  }
+  },
+  "devDependencies": {}
 }

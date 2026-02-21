@@ -3,20 +3,24 @@ const express = require('express');
 // This create an app 
 const app = express();
 
-// to do something when the app is listening 
-
-// define path explicitely
-app.use("/test" ,(req , res)=>{
-      res.send("Testing your app ....")
+// Defining the path :-
+// We can define route handler as many as we want  
+// also we can wrap them into an array 
+app.use("/user" , (req, res , next)=>{
+      // If we don't return / send anything from route handler -> executes ultil it hits the timeout
+      // get hangged  -> always send something from the route handler
+      console.log("Requesting to the path user")
+      // res.send("Response !!")
+      next();
+},(req, res , next)=>{
+      console.log("Route handler 2");
+      res.send("2nd Response")
+      next();
+},(req, res)=>{
+      console.log("Route handler 2");
+      res.send("2nd Response")
 })
 
-app.use("/hello" , (req , res) =>{
-      res.send("Hello Hello Hello Badka Da !!")
-})
-// For all path it will return hello from server when we don't define any other path 
-app.use("/" ,(req,res)=>{
-     res.send("Hello From Server...!");
-})
 
 const port  = 7777;
 

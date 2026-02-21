@@ -19,4 +19,6 @@
  - difined the / , /test ,/hello path
  - since everytime we made changes we have to restart the server is very tiredsome
   - installed nodemon -> automatically restart the server when we make any changes into our server
-  
+ - installed postman for testing API
+   - create workspace and collection and test API call 
+   
