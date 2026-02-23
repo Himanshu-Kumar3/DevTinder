@@ -21,4 +21,14 @@
   - installed nodemon -> automatically restart the server when we make any changes into our server
  - installed postman for testing API
    - create workspace and collection and test API call 
+ - installed mongoose -> to connect with the database
+ - connect with db and after than start the server
+ - create middlewares for authorization and other things
+ - created  schema for the collection
+ - created model based on the schema 
+ - after this created an instance based in that model
+ - save it to the database  
+ - make the schema dynamic i.e get the schema info / data from the client side
+ - parsing the json data form from the client side using middleware -> express.json() ->inbuilt json format
+ -  to use this we do =>  app.use(express.json()) -> without path it is applicable for all the path
    

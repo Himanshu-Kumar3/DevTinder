@@ -4,6 +4,8 @@ const User = require("./model/user");
 // This create an app 
 const app = express();
 
+app.use(express.json());
+
 
 // To put data into the database
 app.post("/signup" , async (req , res)=>{
@@ -14,14 +16,11 @@ app.post("/signup" , async (req , res)=>{
       //       password:"ravi@123"
       // }
       // instead of this :- 
-      const user = new User({
-            firstName:"Ravi",
-            lastName:"Kumar",
-            emailId:"ravi@gmail.com",
-            password:"ravi@123"
-      });
+      // After creating a new model -> create an instance
+      const user = new User(req.body);
 
       try{
+            // by saving it -> new document is created in the collection
            await user.save();
            res.send("Data Send successfully")
       }catch(er){
