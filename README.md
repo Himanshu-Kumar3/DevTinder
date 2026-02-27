@@ -32,3 +32,8 @@
  - parsing the json data form from the client side using middleware -> express.json() ->inbuilt json format
  -  to use this we do =>  app.use(express.json()) -> without path it is applicable for all the path
    
+
+
+
+# FOR CRUD OPERATION -->  
+ - Refer -> Mongoose docs -> Model -> Class
