@@ -93,11 +93,19 @@ app.delete("/user" , async(req, res) =>{
 // using  -> findByIdAndUpdate is equivalent to the findOneAndUpdate
 
 // It only updates the document data which is in schema -> ignores all other things
-app.patch("/user" , async(req  , res) =>{
-      const userId = req.body.userId;
+app.patch("/user/:userId" , async(req  , res) =>{
+      const userId = req?.params.userId;
       const data  = req.body;
       try{
+            const ALLOWED_UPDATES = ["gender" , "skills" ,"about"];
+            const isUpdateAllowed  = Object.keys(data).every((key)=>ALLOWED_UPDATES.includes(key));
+            if(!isUpdateAllowed){
+                  throw new Error("Update not allowed")
+            }
 
+            if (data?.skills.length > 10){
+                  throw new Error("Skills more than 10 is not allowed");
+            }
             const user = await User.findByIdAndUpdate(userId , data , {returnDocument:"after" , runValidators:true}) // bydefault returnDocument = 'before'
             if(!user){
                   res.status(404).send("Error : Document not found")
