@@ -98,7 +98,7 @@ app.patch("/user" , async(req  , res) =>{
       const data  = req.body;
       try{
 
-            const user = await User.findByIdAndUpdate(userId , data , {returnDocument:"after"}) // bydefault returnDocument = 'before'
+            const user = await User.findByIdAndUpdate(userId , data , {returnDocument:"after" , runValidators:true}) // bydefault returnDocument = 'before'
             if(!user){
                   res.status(404).send("Error : Document not found")
             }else{
@@ -107,7 +107,7 @@ app.patch("/user" , async(req  , res) =>{
 
             }
       }catch(er){
-            res.status(400).send("Error:  Something went wrong")
+            res.status(400).send("UPDATE FAILED : " + er.message)
       }
 
 })

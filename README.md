@@ -37,3 +37,14 @@
 
 # FOR CRUD OPERATION -->  
  - Refer -> Mongoose docs -> Model -> Class
+
+
+ # For schema validation 
+  - goto -> mongoose docs -> schemaTypes
+
+ # For gender validation
+ - in model  -> findByIdAndUpdate -> in option ->runValidators:true
+
+ # For timestamp
+ - mongoose docs -> timestamps 
+ - during creation of schema -> const userSchema = new Schema({ name: String }, { timestamps: true })
