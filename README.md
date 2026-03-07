@@ -42,9 +42,30 @@
  # For schema validation 
   - goto -> mongoose docs -> schemaTypes
 
- # For gender validation
- - in model  -> findByIdAndUpdate -> in option ->runValidators:true
+  # For gender validation
+  - in model  -> findByIdAndUpdate -> in option ->runValidators:true
 
  # For timestamp
  - mongoose docs -> timestamps 
  - during creation of schema -> const userSchema = new Schema({ name: String }, { timestamps: true })
+
+
+<!-- We should never trust on req.body -->
+# Sign Up
+ # validate the user before sign up
+ - using helper function -> inside utils
+
+ # encrypt the password
+ - install bcrypt from npm
+ - create password hash using bcrypt.has(plaintext , saltnumber)
+ # store the password into DB
+ - using {password : encryptedPassword} 
+
+
+
+# Login
+ # validate the email 
+  - check if the email exists or not
+ # validate the password
+  - using bcrypt.compare(plaintext , user.password)  // user -> get from the db
+ # Login the user 

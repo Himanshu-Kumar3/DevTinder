@@ -1,6 +1,8 @@
 const express = require('express');
 const {connectDB} = require("./config/database");
 const User = require("./model/user");
+const {validateUser} = require('./utils/validator');
+const bcrypt = require('bcrypt');
 // This create an app 
 const app = express();
 
@@ -9,6 +11,8 @@ app.use(express.json());
 
 // To put data into the database
 app.post("/signup" , async (req , res)=>{
+       try{
+            const {firstName , lastName , emailId, password} = req.body
       // const dummyUser = {
       //       firstName:"Ravi",
       //       lastName:"Kumar",
@@ -17,9 +21,25 @@ app.post("/signup" , async (req , res)=>{
       // }
       // instead of this :- 
       // After creating a new model -> create an instance
-      const user = new User(req.body);
 
-      try{
+
+// Before Storing 
+// Validate the data
+    validateUser(req);
+
+// Encrypting the password -
+// Once password is encrypted -> can't be decrypted -> only the person who sets the password can know what the password will be 
+    const encryptedPassword  = await bcrypt.hash(password , 10); // bcrypt.hash(plaintext , saltrounds)
+      // saltrounds -> basically hash  -> repeat number
+      //  more the saltround strong will be the password
+      const user = new User({  // this is an instance of the User(Model)
+            firstName , 
+            lastName ,
+            emailId ,
+            password :encryptedPassword
+      });
+
+     
             // by saving it -> new document is created in the collection
            await user.save();
            res.send("Data Send successfully")
@@ -27,6 +47,29 @@ app.post("/signup" , async (req , res)=>{
             res.status(400).send("Error :" + er.message)
       }
     
+})
+
+// For Login
+
+app.post("/login" ,async(req, res)=>{
+      try{
+            const {emailId , password} = req.body;
+            const user = await User.findOne({emailId:emailId})
+            if(!user){
+                  throw new Error("Invalid Credential");
+            }
+            const isValidPassword =await  bcrypt.compare(password , user.password); // return boolean(true / false)
+            if(!isValidPassword){
+                  throw new Error("Invalid Credential");
+            }
+
+            res.send("login sucessful")
+
+
+      }catch(er){
+            res.status(400).send("Error : " + er.message);
+      }
+
 })
 
 
