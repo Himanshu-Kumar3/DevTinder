@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const validator = require('validator');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt")
 
+
+// Since the User model is an instace of the userSchema -> we can define schema methods which will be for different users  
 const userSchema = new mongoose.Schema(
       {
       // Schema is created
@@ -58,6 +62,23 @@ const userSchema = new mongoose.Schema(
             type:[String]
       }
 } , { timestamps: true })
+
+
+
+// schema methods :- to offload something
+userSchema.methods.getJWT = async function(){
+      const user = this;
+      const token = await  jwt.sign({_id : user._id}, "DEV@Tinder9508" , {expiresIn : '1d'} )
+      return token;
+}
+
+userSchema.methods.passwordValidator = async function(passwordByUser){
+      const user = this;
+      const passwordHash = user.password;
+      const isPasswordValid = await bcrypt.compare(passwordByUser , passwordHash)
+      return isPasswordValid;
+}
+
 
 // Model = collection/database name , schema name
 // Based on that scema we create a new model

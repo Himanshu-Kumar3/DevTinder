@@ -3,10 +3,15 @@ const {connectDB} = require("./config/database");
 const User = require("./model/user");
 const {validateUser} = require('./utils/validator');
 const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const {userAuth} = require("./middleware/auth");
 // This create an app 
 const app = express();
 
+
 app.use(express.json());
+app.use(cookieParser());
 
 
 // To put data into the database
@@ -58,13 +63,19 @@ app.post("/login" ,async(req, res)=>{
             if(!user){
                   throw new Error("Invalid Credential");
             }
-            const isValidPassword =await  bcrypt.compare(password , user.password); // return boolean(true / false)
-            if(!isValidPassword){
+            const isValidPassword = await  user.passwordValidator(password); // return boolean(true / false)
+            if(isValidPassword){
+                  // Create a jwt token
+                  // const token = jwt.sign({secretinfo} , privatekey , {signature});
+                  const token = await  user.getJWT()
+                  res.cookie("token" , token , { expires: new Date(Date.now() + 8 * 3600000), httpOnly: true }); // cookie will be expred in 8 days
+                  console.log(token)
+                  res.send("login sucessful");
+
+            }else{
                   throw new Error("Invalid Credential");
+
             }
-
-            res.send("login sucessful")
-
 
       }catch(er){
             res.status(400).send("Error : " + er.message);
@@ -72,96 +83,39 @@ app.post("/login" ,async(req, res)=>{
 
 })
 
+// Getting profile :-
+app.get("/profile" ,userAuth , async (req,res)=>{
 
-// Getting data from the database :-
-// Only one data 
-app.get("/user" ,async(req, res)=>{
-      const userId = req.body.id;
       try{
-      //   const user = await  User.find({emailId: userEmail}); // finds all the  document which  has this email id return [of documents]
-      //   to find only one :-
-      // if we leave empty {} -> in findOne  -> returns an arbitrary document -> which is generally the first document of the collection
-      // const user = await User.findOne({emailId:userEmail})  // returns document only 
-      const user = await User.findById(userId)  // {_id:id} = {id}
-      if(!user){
-            res.status(404).send("user not found")
-      }else{
-            res.send(user)
-      }
-      //   if(user.length > 0){
-      //       res.send(user)
-      //   }else{
-      //       res.status(404).send("User not found")
-      //   }
-        
+      // validate the token
+      // const decoded(secretinfo) = jwt.verify(token , privateKey)
+      const user = await req.user;
+      res.send(user);
+
       }catch(er){
-       console.log("Error is error ")
+            res.status(400).send("ERROR : " + er.message);
       }
+
 })
 
 
 
-// To get all the documents of a collection :-
-app.get("/find" , (async (req, res)=>{
-      try{
-            const users = await User.find({})
-            if(users.length > 0){
-                  res.send(users);
-            }else{
-                  res.status(404).send("User not found")
-            }
-      }catch(er){
-            console.log("Error is " + er.message)
-      }
-}))
+// Sending connection request
 
-
-// To delete document from the database using -> findByIdAndDelete(id / _id:id)
-app.delete("/user" , async(req, res) =>{
-      const userId = req.body.userId;
+app.post("/sendConnection" ,userAuth ,  async(req, res)=>{
       try{
-            const user = await User.findByIdAndDelete(userId);
-            if(!user){
-                  res.status(404).send("Error : File not Found")
-            }else{
-                  res.send("user deleted successfully")
-            }   
+            const user = await req.user;
+
+            res.send(user.firstName + " sent the connection ..!")
 
       }catch(er){
-            res.status(400).send("Error : Something Went Wrong")
+            res.status(400).send("Error :"+ er.message)
       }
-}) 
 
-// Update the user using  -> Patch  method
-// using  -> findByIdAndUpdate is equivalent to the findOneAndUpdate
-
-// It only updates the document data which is in schema -> ignores all other things
-app.patch("/user/:userId" , async(req  , res) =>{
-      const userId = req?.params.userId;
-      const data  = req.body;
-      try{
-            const ALLOWED_UPDATES = ["gender" , "skills" ,"about"];
-            const isUpdateAllowed  = Object.keys(data).every((key)=>ALLOWED_UPDATES.includes(key));
-            if(!isUpdateAllowed){
-                  throw new Error("Update not allowed")
-            }
-
-            if (data?.skills.length > 10){
-                  throw new Error("Skills more than 10 is not allowed");
-            }
-            const user = await User.findByIdAndUpdate(userId , data , {returnDocument:"after" , runValidators:true}) // bydefault returnDocument = 'before'
-            if(!user){
-                  res.status(404).send("Error : Document not found")
-            }else{
-                  console.log(user);
-                  res.send("Data updated successfully")
-
-            }
-      }catch(er){
-            res.status(400).send("UPDATE FAILED : " + er.message)
-      }
 
 })
+
+
 const port  = 7777;
 // By this now the app is ready to listen the request
 connectDB()
@@ -174,7 +128,3 @@ connectDB()
 }).catch(er=>{
       console.log("Connection failed....."+ er);
 })
-
-
-
-
