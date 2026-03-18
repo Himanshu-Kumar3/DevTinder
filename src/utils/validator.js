@@ -1,5 +1,5 @@
 const validator = require('validator')
-const validateUser = (req)=>{
+const validateSignupUser = (req)=>{
 const {firstName , lastName , emailId , password} = req.body;
 
 if(!firstName || !lastName){
@@ -10,4 +10,4 @@ if(!firstName || !lastName){
       throw new Error("Please enter a strong password")
 }
 }
-module.exports = {validateUser};
+module.exports = {validateSignupUser};
