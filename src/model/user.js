@@ -54,6 +54,11 @@ const userSchema = new mongoose.Schema(
             }
            }
       },
+      photoUrl:{
+            type:String,
+            default:"https://img.freepik.com/free-vector/user-circles-set_78370-4704.jpg?semt=ais_rp_progressive&w=740&q=80"
+
+      },
       about:{
             type:String,
             default:"This is default about for the user"
