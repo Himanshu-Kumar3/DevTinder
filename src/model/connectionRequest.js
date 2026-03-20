@@ -16,5 +16,15 @@ const connectionRequestSchema = new mongoose.Schema({
       }
 },{timestamps:true});
 
+connectionRequestSchema.pre("save" , function(){
+      const connectionRequest = this;
+      if(connectionRequest.fromUserId.equals(connectionRequest.toUserId)){
+            throw new Error("You can't Send connection request to yourself");
+      }
+
+});
+
+// Compound index -> to make the search query inside the db faster
+connectionRequestSchema.index({fromUserId: 1 , toUserId: 1});
 const ConnectionRequest = mongoose.model("connectionRequest" , connectionRequestSchema);
 module.exports = ConnectionRequest;
