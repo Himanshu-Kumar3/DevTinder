@@ -87,5 +87,5 @@ userSchema.methods.passwordValidator = async function(passwordByUser){
 
 // Model = collection/database name , schema name
 // Based on that scema we create a new model
-const User = mongoose.model("user" , userSchema);
+const User = mongoose.model("User" , userSchema);
 module.exports = User;

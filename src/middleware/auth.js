@@ -4,8 +4,7 @@ const userAuth = async (req, res , next)=>{
 
       try{
       // Get the  from the req cookie
-      const cookies = req.cookies;
-      const {token} = cookies;
+      const {token} = req.cookies;
 
       if(!token){
             throw new Error("Token is Invalid!");

@@ -51,21 +51,47 @@
 
 
 <!-- We should never trust on req.body -->
+
+# API METHODS 
 # Sign Up
- # validate the user before sign up
+ ## validate the user before sign up
  - using helper function -> inside utils
 
- # encrypt the password
+ ## encrypt the password
  - install bcrypt from npm
  - create password hash using bcrypt.has(plaintext , saltnumber)
- # store the password into DB
+ ## store the password into DB
  - using {password : encryptedPassword} 
 
 
 
 # Login
- # validate the email 
+ ## validate the email 
   - check if the email exists or not
- # validate the password
+ ## validate the password
   - using bcrypt.compare(plaintext , user.password)  // user -> get from the db
- # Login the user 
+ ## Login the user 
+  - create token -> also set the expire
+  - store it into cookies -> also set the expire
+  
+
+
+
+
+
+ # review the Request
+  - API Method - request/review/:status/:requestId
+  ## validate the user
+   - Either user is loggedIn Or not -> using userAuth (validator / middleware)
+
+  ## Validate the status
+    - status should only be either accepted / rejected
+
+  ## validate the user / connection request
+   - _id == requestId  , toUserId == loggedInUser ._id  , status == "interested"
+
+  ## Change the status
+    - connectionRequest.status = status
+
+  ## save the data to db ;     
+   
