@@ -2,11 +2,13 @@ const mongoose = require("mongoose");
 const connectionRequestSchema = new mongoose.Schema({
       fromUserId :{
             type:mongoose.Schema.Types.ObjectId,
-            required:true
+            required:true,
+            ref:"User"
       },
       toUserId:{
             type:mongoose.Schema.Types.ObjectId,
-            required:true
+            required:true,
+            ref :"User"
       },status:{
             type:String,
             enum:{ // same as validate method :- defines what should be the status . other than this shows error
@@ -21,7 +23,7 @@ connectionRequestSchema.pre("save" , function(){
       if(connectionRequest.fromUserId.equals(connectionRequest.toUserId)){
             throw new Error("You can't Send connection request to yourself");
       }
-
+     
 });
 
 // Compound index -> to make the search query inside the db faster
