@@ -12,8 +12,9 @@ const requestRouter = require("./routes/request");
 const userRouter = require('./routes/user');
 
 app.use(cors({ //  to bypass the cors  , by adding the specific url form which we sent the req 
-      origin:"http://localhost:5173/",
-      credentials:true
+      origin:"http://localhost:5173",
+      credentials:true,
+      methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'], 
 }))
 app.use(express.json());
 app.use(cookieParser());

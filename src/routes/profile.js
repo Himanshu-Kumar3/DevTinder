@@ -28,16 +28,19 @@ profileRouter.post("/profile/edit" , userAuth , async (req , res)=>{
                   if(user?.skills.length >10){
                         throw new Error("Maximum skills length should be 10")
                   }
+
+                  
                  
-                  console.log(loggedInUser);
+                  
                   Object.keys(user).forEach(key => loggedInUser[key] = user[key]);
                   console.log(loggedInUser);
                   await loggedInUser.save();
-                  res.send(`${loggedInUser.firstName} your data was updated successfuly` )
+                  res.json({message :`${loggedInUser.firstName} your data was updated successfuly`,
+                  data : loggedInUser });
              }
 
       }catch(er){
-            res.send("Error :" + er.message)
+            res.json({message :"Error :" + er.message})
       }
      
 
