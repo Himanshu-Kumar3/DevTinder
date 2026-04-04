@@ -40,7 +40,7 @@ profileRouter.post("/profile/edit" , userAuth , async (req , res)=>{
              }
 
       }catch(er){
-            res.json({message :"Error :" + er.message})
+            res.status(400).json({message :"Error :" + er.message})
       }
      
 

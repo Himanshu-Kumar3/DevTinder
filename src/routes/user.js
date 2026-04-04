@@ -5,7 +5,7 @@ const ConnectionRequest = require("../model/connectionRequest");
 const User = require("../model/user");
 
 
-const User_Safe_Data = "firstName lastName photoUrl skills about"
+const User_Safe_Data = "firstName lastName photoUrl skills about age gender"
 
 // Get the requests of the user which are pending i.e status -> interested
 userRouter.get("/user/request/recieved" , userAuth , async(req, res)=>{
@@ -14,7 +14,7 @@ userRouter.get("/user/request/recieved" , userAuth , async(req, res)=>{
             const connectionRequest = await ConnectionRequest.find({
                   toUserId : loggedInUser._id,
                   status  :"interested"
-            }).populate("fromUserId" ,  "firstName lastName photoUrl skills about");
+            }).populate("fromUserId" ,  "firstName lastName photoUrl skills about age gender");
              
              res.json({message :"Data sent successfuly" , data : connectionRequest})
 
@@ -58,7 +58,7 @@ userRouter.get("/user/connections" , userAuth , async(req, res)=>{
             res.send({message : "Connections" , data})
            
       }catch(er){
-            res.send({message : er.message})
+            res.status(400).send({message : er.message})
       }
 });
 
