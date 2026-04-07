@@ -23,7 +23,7 @@ authRouter.post("/signup" , async (req,res)=>{
             password :encryptedPassword
       });
       user.save();
-      res.send("Signup Sucessful !")
+      res.json({message :"Signup Sucessful !"})
 }catch(er){
       res.status(400).send("Error :" + er.message);
 }

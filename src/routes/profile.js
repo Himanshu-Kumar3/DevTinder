@@ -33,7 +33,7 @@ profileRouter.post("/profile/edit" , userAuth , async (req , res)=>{
                  
                   
                   Object.keys(user).forEach(key => loggedInUser[key] = user[key]);
-                  console.log(loggedInUser);
+                  
                   await loggedInUser.save();
                   res.json({message :`${loggedInUser.firstName} your data was updated successfuly`,
                   data : loggedInUser });
