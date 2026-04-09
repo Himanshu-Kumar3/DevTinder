@@ -28,10 +28,6 @@ profileRouter.post("/profile/edit" , userAuth , async (req , res)=>{
                   if(user?.skills.length >10){
                         throw new Error("Maximum skills length should be 10")
                   }
-
-                  
-                 
-                  
                   Object.keys(user).forEach(key => loggedInUser[key] = user[key]);
                   
                   await loggedInUser.save();
