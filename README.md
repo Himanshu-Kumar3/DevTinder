@@ -95,3 +95,14 @@
 
   ## save the data to db ;     
    
+
+
+
+
+   <!-- Devtinder Ubunto -->
+   frontend -> http://13.48.177.183/
+   backend -> http://13.48.177.183:7777
+
+   map into domain
+   frontend -> devTinder.com
+   backend -> devtinder.com:777(not) => instead it should be devTinder.com/api
